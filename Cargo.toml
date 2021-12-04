@@ -1,0 +1,46 @@
+[package]
+name = "papers"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.45"
+async-trait = "0.1.51"
+axum = "0.3.0"
+axum-debug = "0.1.0"
+base64 = "0.13.0"
+chrono = { version = "0.4.19", features = [ "serde" ] }
+env_logger = "0.9.0"
+envconfig = "0.10.0"
+futures = "0.3.17"
+hex = "0.4.3"
+hmac = "0.11.0"
+http = "0.2.5"
+hyper = "0.14.14"
+jsonwebtoken = "7.2.0"
+lazy_static = "1.4.0" # TODO: Remove me
+log = "0.4.14"
+opg = "0.0.34"
+rand = "0.8.4"
+rand_core = "0.6.3"
+rsa = "0.5.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.67"
+serde_yaml = "0.8.21"
+sha2 = "0.9.8"
+sqlx = { version = "0.5", features = [ "chrono", "migrate", "runtime-tokio-native-tls", "postgres" ] }
+thiserror = "1.0.30"
+tokio = { version = "1.5.0", features = [ "macros", "rt" ] }
+tower = "0.4.10"
+tower-http = { version = "0.1.1", features = [ "trace" ] }
+tracing = "0.1.29"
+tracing-subscriber = { version = "0.3.1", features = [ "env-filter" ] }
+uuid = { version = "0.8.2", features = [ "v4" ] }
+
+[dev-dependencies]
+lazy_static = "1.4.0"
+
+[profile.dev.package.num-bigint-dig]
+opt-level = 3
