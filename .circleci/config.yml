@@ -8,7 +8,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build and Test
-          command: ./test.sh
+          command: ./test.sh --database
   publish:
     docker:
       - image: cimg/base:2020.12

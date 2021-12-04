@@ -23,6 +23,7 @@ Example:
 {
     "account_id": "*",
     "resource_type": "roles",
+    "resource_id": "1234",
     "action_id": "read"
 }
 ```
