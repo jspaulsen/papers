@@ -18,5 +18,5 @@ services:
       POSTGRES_DB: database
 
 networks:
-    internal:
-        driver: bridge
+  default:
+    driver: bridge
