@@ -23,19 +23,21 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-
 source build.sh --target build --tag $TAG
 
 
 if [ "$DATABASE" = true ]; then
+    docker network create -d bridge papers_test_network
+
     docker-compose run \
         --rm \
         ${TAG} \
         cargo test --release -- --include-ignored
 
     ERR_CODE=$?
-    docker-compose down
 
+    docker-compose down
+    docker network rm papers_test_network
     exit $ERR_CODE
 else
     docker run $TAG cargo test --release
