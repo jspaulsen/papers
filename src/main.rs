@@ -87,9 +87,9 @@ async fn main() {
     let hmac_key = Arc::new(HmacKey::new(&*config.hmac_secret_key));
 
     // Generate OpenApi docs
-    let docs = openapi::generate_opg_api(&config.application_version);
+    let docs = openapi::generate_opg_api(config::APPLICATION_VERSION);
 
-    let database = database::get_db_pool(&config) // TODO: Will change
+    let database = database::get_db_pool(&config)
         .await
         .expect("Failed to setup database connection pool!");
 

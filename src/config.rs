@@ -20,6 +20,8 @@ pub type SharedConfiguration = Arc<Configuration>;
 const JWS_PEM_FNAME: &str = "jws.pem";
 const ROOT_SECRETS_FNAME: &str = "secrets.json";
 
+
+pub const APPLICATION_VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const DEFAULT_JWKS_CACHE_DURATION: u64 = 3600;
 pub const DEFAULT_TOKEN_EXPIRATION: usize = 3600; // 60m duration
 pub const DEFAULT_TOKEN_LEEWAY: u64 = 10;
@@ -50,9 +52,6 @@ pub struct Configuration {
 
     #[envconfig(from = "REISSUE_ROOT_SECRETS", default = "false")]
     pub reissue_root_secrets: bool,
-
-    #[envconfig(from = "CARGO_PKG_VERSION",)]
-    pub application_version: String,
 }
 
 
