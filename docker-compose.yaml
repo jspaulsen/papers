@@ -1,8 +1,6 @@
 version: "3.3"
 services:
   papers-tests:
-    networks:
-      - pg_network
     image: papers-tests
     environment:
       HMAC_SECRET_KEY: d84f6e8740cc7803518b1e890c4324afe1ee154500beb61ab7bce1f430972e3b
@@ -14,14 +12,11 @@ services:
       - db
   db:
     image: postgres:14.1
-    networks:
-      - pg_network
     environment:
       POSTGRES_USER: papers
       POSTGRES_PASSWORD: abcd
       POSTGRES_DB: database
 
 networks:
-  pg_network:
-    ipam:
-      driver: default
+    internal:
+        driver: bridge
