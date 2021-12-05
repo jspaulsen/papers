@@ -2,8 +2,6 @@ version: "3.3"
 services:
   papers-tests:
     image: papers-tests
-    networks:
-      - papers_test_network
     environment:
       HMAC_SECRET_KEY: d84f6e8740cc7803518b1e890c4324afe1ee154500beb61ab7bce1f430972e3b
       DATABASE_URI: postgres://db # postgres://papers:abcd@postgres/database
@@ -14,13 +12,7 @@ services:
       - db
   db:
     image: postgres:14.1
-    networks:
-      - papers_test_network
     environment:
       POSTGRES_USER: papers
       POSTGRES_PASSWORD: abcd
       POSTGRES_DB: database
-
-networks:
-  papers_test_network:
-    external: true
