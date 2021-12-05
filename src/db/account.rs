@@ -46,7 +46,7 @@ mod live {
         }
 
         pub async fn create<S: AsRef<str>>(&self, description: S) -> Result<Account, DatabaseError> {
-            sqlx::query_as::<_, Account>("INSERT INTO accounts (description) VALUES (?1) RETURNING *")
+            sqlx::query_as::<_, Account>("INSERT INTO accounts (description) VALUES ($1) RETURNING *")
                 .bind(description.as_ref())
                 .fetch_one(&self.pool)
                 .await
@@ -54,7 +54,7 @@ mod live {
         }
 
         pub async fn get(&self, id: i32) -> Result<Option<Account>, DatabaseError> {
-            sqlx::query_as::<_, Account>("SELECT * FROM accounts WHERE id = ?1")
+            sqlx::query_as::<_, Account>("SELECT * FROM accounts WHERE id = $1")
                 .bind(id)
                 .fetch_optional(&self.pool)
                 .await
@@ -62,7 +62,7 @@ mod live {
         }
 
         pub async fn delete(&self, id: i32) -> Result<Option<Account>, DatabaseError> {
-            sqlx::query_as::<_, Account>("DELETE FROM accounts WHERE id = ?1 RETURNING *")
+            sqlx::query_as::<_, Account>("DELETE FROM accounts WHERE id = $1 RETURNING *")
                 .bind(id)
                 .fetch_optional(&self.pool)
                 .await
