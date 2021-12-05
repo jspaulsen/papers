@@ -23,9 +23,7 @@ pub struct Account {
 }
 
 
-
-#[cfg(not(test))]
-mod live {
+pub mod live {
     use crate::{
         database::PgPool,
         db::DatabaseError,
@@ -168,7 +166,7 @@ mod tests {
         db::tests::get_migrated_pool,
     };
 
-    use super::AccountQuery;
+    use super::live::AccountQuery;
 
     fn config() -> Configuration {
         Configuration::init_from_env()
