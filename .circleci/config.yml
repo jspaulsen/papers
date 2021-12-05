@@ -1,11 +1,10 @@
 version: 2
 jobs:
   build-test:
-    docker:
-      - image: cimg/base:stable-20.04
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
+      # - setup_remote_docker
       - run:
           name: Build and Test
           command: ./test.sh --database
