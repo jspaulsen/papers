@@ -40,7 +40,6 @@ pub use live::{
 };
 
 
-#[cfg(not(test))]
 mod live {
     use crate::{
         database::PgPool,
@@ -136,7 +135,7 @@ mod live {
         }
 
         pub async fn get(&self, id: i32) -> Result<Option<RolePermission>, DatabaseError> {
-            sqlx::query_as::<_, RolePermission>("SELECT * FROM role_permission WHERE id = $1")
+            sqlx::query_as::<_, RolePermission>("SELECT * FROM role_permissions WHERE id = $1")
                 .bind(id)
                 .fetch_optional(&self.pool)
                 .await
@@ -146,7 +145,7 @@ mod live {
         pub async fn create(&self, role_id: i32, permission: RolePermissionPayload) -> Result<RolePermission, DatabaseError> {
             let query = r#"INSERT INTO role_permissions
                 (role_id, account_id, resource_type, resource_id, action_id) VALUES
-                ($1, $2, $3 $4 $5) RETURNING *"#;
+                ($1, $2, $3, $4, $5) RETURNING *"#;
 
             sqlx::query_as::<_, RolePermission>(query)
                 .bind(role_id)
@@ -160,7 +159,7 @@ mod live {
         }
 
         pub async fn delete(&self, id: i32) -> Result<Option<RolePermission>, DatabaseError> {
-            sqlx::query_as::<_, RolePermission>("DELETE FROM roles WHERE id = $1 RETURNING *")
+            sqlx::query_as::<_, RolePermission>("DELETE FROM role_permissions WHERE id = $1 RETURNING *")
                 .bind(id)
                 .fetch_optional(&self.pool)
                 .await
@@ -384,13 +383,13 @@ mod tests {
     use crate::{
         config::Configuration,
         db::{
-            AccountQuery,
+            account::live::AccountQuery,
             tests::get_migrated_pool,
         },
         schemas::RolePermissionPayload,
     };
 
-    use super::{
+    use super::live::{
         RolePermissionQuery,
         RoleQuery,
     };
