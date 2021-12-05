@@ -1,27 +1,27 @@
 version: "3.3"
 services:
   papers-tests:
+    networks:
+      - pg_network
     image: papers-tests
     environment:
       HMAC_SECRET_KEY: d84f6e8740cc7803518b1e890c4324afe1ee154500beb61ab7bce1f430972e3b
-      DATABASE_URI: postgres://postgres # postgres://papers:abcd@postgres/database
+      DATABASE_URI: postgres://db # postgres://papers:abcd@postgres/database
       PGUSER: papers
       PGPASSWORD: abcd
       PGDATABASE: database
     depends_on:
-      - postgres
-  postgres:
+      - db
+  db:
     image: postgres:14.1
+    networks:
+      - pg_network
     environment:
       POSTGRES_USER: papers
       POSTGRES_PASSWORD: abcd
       POSTGRES_DB: database
 
-# PGHOST
-# PGPORT
-# PGUSER
-# PGPASSWORD
-# PGDATABASE
-# PGSSLROOTCERT
-# PGSSLMODE
-# PGAPPNAME
+networks:
+  pg_network:
+    ipam:
+      driver: default
