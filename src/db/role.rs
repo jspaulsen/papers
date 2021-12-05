@@ -73,7 +73,7 @@ mod live {
         }
 
         pub async fn get(&self, id: i32) -> Result<Option<Role>, DatabaseError> {
-            sqlx::query_as::<_, Role>("SELECT * FROM accounts WHERE id = ?1")
+            sqlx::query_as::<_, Role>("SELECT * FROM roles WHERE id = $1")
                 .bind(id)
                 .fetch_optional(&self.pool)
                 .await
@@ -81,7 +81,7 @@ mod live {
         }
 
         pub async fn create<S: AsRef<str> + Send>(&self, account_id: i32, description: S, api_token: S) -> Result<Role, DatabaseError> {
-            sqlx::query_as::<_, Role>("INSERT INTO roles (account_id, description, api_token) VALUES (?1, ?2, ?3) RETURNING *")
+            sqlx::query_as::<_, Role>("INSERT INTO roles (account_id, description, api_token) VALUES ($1, $2, $3) RETURNING *")
                 .bind(account_id)
                 .bind(description.as_ref())
                 .bind(api_token.as_ref())
@@ -91,7 +91,7 @@ mod live {
         }
 
         pub async fn update_token<S: AsRef<str> + Send>(&self, id: i32, api_token: S) -> Result<Option<Role>, DatabaseError> {
-            sqlx::query_as::<_, Role>("UPDATE roles SET api_token = ?1 WHERE id = ?2 RETURNING *")
+            sqlx::query_as::<_, Role>("UPDATE roles SET api_token = $1 WHERE id = $2 RETURNING *")
                 .bind(api_token.as_ref())
                 .bind(id)
                 .fetch_optional(&self.pool)
@@ -100,7 +100,7 @@ mod live {
         }
 
         pub async fn delete(&self, id: i32) -> Result<Option<Role>, DatabaseError> {
-            sqlx::query_as::<_, Role>("DELETE FROM roles WHERE id = ?1 RETURNING *")
+            sqlx::query_as::<_, Role>("DELETE FROM roles WHERE id = $1 RETURNING *")
                 .bind(id)
                 .fetch_optional(&self.pool)
                 .await
@@ -128,7 +128,7 @@ mod live {
         }
 
         pub async fn get_by_role_id(&self, role_id: i32) -> Result<Vec<RolePermission>, DatabaseError> {
-            sqlx::query_as::<_, RolePermission>("SELECT * FROM role_permissions WHERE role_id = ?1")
+            sqlx::query_as::<_, RolePermission>("SELECT * FROM role_permissions WHERE role_id = $1")
                 .bind(role_id)
                 .fetch_all(&self.pool)
                 .await
@@ -136,7 +136,7 @@ mod live {
         }
 
         pub async fn get(&self, id: i32) -> Result<Option<RolePermission>, DatabaseError> {
-            sqlx::query_as::<_, RolePermission>("SELECT * FROM role_permission WHERE id = ?1")
+            sqlx::query_as::<_, RolePermission>("SELECT * FROM role_permission WHERE id = $1")
                 .bind(id)
                 .fetch_optional(&self.pool)
                 .await
@@ -146,7 +146,7 @@ mod live {
         pub async fn create(&self, role_id: i32, permission: RolePermissionPayload) -> Result<RolePermission, DatabaseError> {
             let query = r#"INSERT INTO role_permissions
                 (role_id, account_id, resource_type, resource_id, action_id) VALUES
-                (?1, ?2, ?3 ?4 ?5) RETURNING *"#;
+                ($1, $2, $3 $4 $5) RETURNING *"#;
 
             sqlx::query_as::<_, RolePermission>(query)
                 .bind(role_id)
@@ -160,7 +160,7 @@ mod live {
         }
 
         pub async fn delete(&self, id: i32) -> Result<Option<RolePermission>, DatabaseError> {
-            sqlx::query_as::<_, RolePermission>("DELETE FROM roles WHERE id = ?1 RETURNING *")
+            sqlx::query_as::<_, RolePermission>("DELETE FROM roles WHERE id = $1 RETURNING *")
                 .bind(id)
                 .fetch_optional(&self.pool)
                 .await
