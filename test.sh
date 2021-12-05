@@ -23,7 +23,6 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-
 source build.sh --target build --tag $TAG
 
 
@@ -34,8 +33,8 @@ if [ "$DATABASE" = true ]; then
         cargo test --release -- --include-ignored
 
     ERR_CODE=$?
-    docker-compose down
 
+    docker-compose down
     exit $ERR_CODE
 else
     docker run $TAG cargo test --release
